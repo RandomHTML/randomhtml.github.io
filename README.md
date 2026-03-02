@@ -1,71 +1,73 @@
-# Duel of Legends - Local Multiplayer Fighting Game
+# React + TypeScript + Vite
 
-This is a modern web application built with **React**, **TypeScript**, and **Tailwind CSS**.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## 🚀 How to Run Locally
+Currently, two official plugins are available:
 
-Because this app uses modern web technologies, you cannot simply open the `index.html` file in your browser. You need to run a small local server.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-### Prerequisites
-- Install **Node.js** (v18 or higher) from [nodejs.org](https://nodejs.org/).
+## React Compiler
 
-### Setup Instructions
-1. **Download and Extract** the project files to a folder on your computer.
-2. **Open a Terminal** (Command Prompt, PowerShell, or Terminal) in that folder.
-3. **Install the dependencies**:
-   ```bash
-   npm install
-   ```
-4. **Start the game**:
-   ```bash
-   npm run dev
-   ```
-5. **Play**: Open your browser and go to the address shown in the terminal (usually `http://localhost:3000`).
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## 🛠️ Controls
+## Expanding the ESLint configuration
 
-### Player 1 (Blue)
-- **W**: Jump
-- **A**: Move Left
-- **D**: Move Right
-- **S**: Attack
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
 
-### Player 2 (Red)
-- **Up Arrow**: Jump
-- **Left Arrow**: Move Left
-- **Right Arrow**: Move Right
-- **Down Arrow**: Attack
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
 
-*Note: On mobile or tablet devices, touch controls will appear automatically.*
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
 
-## 🌐 Deploying to GitHub Pages
-
-I have pre-configured this project for easy deployment to GitHub Pages.
-
-1. **Initialize a Git Repository** (if you haven't):
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit"
-   ```
-2. **Create a new repository on GitHub** and link it:
-   ```bash
-   git remote add origin https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
-   ```
-3. **Deploy with one command**:
-   ```bash
-   npm run deploy
-   ```
-   *This will automatically build the project and upload it to a `gh-pages` branch on GitHub.*
-
-4. **Final Step on GitHub**:
-   - Go to your repository on GitHub.
-   - Click **Settings** > **Pages**.
-   - Under "Build and deployment", ensure the source is set to "Deploy from a branch" and the branch is set to `gh-pages`.
-
-## 🏗️ Building for Production
-If you want to host this on a website (like GitHub Pages or Vercel):
-```bash
-npm run build
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
 ```
-The "ready-to-upload" files will be in the `dist` folder.
+
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
+
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+```
